@@ -1,0 +1,27 @@
+.filter-panel {
+   display: flex;
+   flex-direction: column;
+   border-radius: 16px;
+   /* border: solid #333333 4px; */
+   background: white;
+   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.filter-panel__header {
+   padding: 8px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   font-weight: 600;
+}
+
+.filter-panel__selected-block {
+   padding: 8px;
+   margin-bottom: 16px;
+}
+
+.filter-panel__awaiting-choice-block {
+   background-color: #EEEEEE;
+   border-radius: 0 0 16px 16px;
+   padding: 8px;
+}

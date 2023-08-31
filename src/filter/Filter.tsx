@@ -1,14 +1,33 @@
-import React, { useCallback, useState } from 'react';
+import React, {
+   useCallback,
+   useState,
+   lazy,
+   Suspense
+} from 'react';
+import { IconButton } from '../iconButton';
 import FilterIcon from '../icons/FilterIcon';
-import FilterPanel from './FilterPanel';
-import { FilterProps } from './types';
+import {
+   FilterItemType,
+   FilterProps,
+   InsideFilterItemType
+} from './types';
 
-const Filter: React.FC<FilterProps> = ({
+const FilterPanel = lazy(() => import('./FilterPanel'));
+
+function getFilterState(items: FilterItemType[]): InsideFilterItemType[] {
+   return items.map((item) => ({
+      ...item,
+      status: 'awaitingСhoice'
+   }));
+}
+
+const Filter: React.FC<FilterProps<FilterItemType>> = ({
    items = [],
    width,
    headerText = ''
 }) => {
    const [showPanel, setShowPanel] = useState(false);
+   const [_items, _setItems] = useState(getFilterState(items));
 
    const toggleShowPanel = useCallback(() => {
       setShowPanel((oldValue) => !oldValue);
@@ -16,18 +35,19 @@ const Filter: React.FC<FilterProps> = ({
 
    return (
       (!showPanel) ? (
-         <FilterIcon
-            width={24}
-            height={24}
-            onClick={toggleShowPanel}
-         />
+         <IconButton onClick={toggleShowPanel}>
+            <FilterIcon />
+         </IconButton>
       ) : (
-         <FilterPanel
-            items={items}
-            width={width}
-            headerText={headerText}
-            toggleShowPanel={toggleShowPanel}
-         />
+         <Suspense fallback={<></>}>
+            <FilterPanel
+               items={_items}
+               setItems={_setItems}
+               width={width}
+               headerText={headerText}
+               toggleShowPanel={toggleShowPanel}
+            />
+         </Suspense>
       )
    )
 }

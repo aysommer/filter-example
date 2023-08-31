@@ -1,0 +1,20 @@
+.filter-item {
+   border-radius: 16px;
+   border: none;
+   padding: 4px 8px;
+   cursor: pointer;
+}
+
+.filter-item:hover {
+   background-color: #DDDDDD;
+}
+
+.select {
+   margin-right: 8px;
+   margin-top: 4px;
+}
+
+.number-entry {
+   margin-right: 8px;
+   margin-top: 4px;
+}

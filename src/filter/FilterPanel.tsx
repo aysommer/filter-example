@@ -1,55 +1,58 @@
-import type { FilterProps } from './types';
-import React, { CSSProperties, useMemo } from 'react';
+import type { FilterProps, InsideFilterItemType } from './types';
+import React, { useMemo } from 'react';
 import CloseIcon from '../icons/CloseIcon';
 import FilterItem from './FilterItem';
+import { IconButton } from '../iconButton';
 
-const STYLES: CSSProperties = {
-   display: 'flex',
-   flexDirection: 'column',
-   borderRadius: '16px',
-   padding: '16px',
-   background: 'white',
-   boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
-};
+import './FilterPanel.css';
 
-const HEADER_STYLES: CSSProperties = {
-   fontWeight: 600,
-   marginBottom: '16px',
-   display: 'flex',
-   justifyContent: 'space-between'
-};
-
-type FilterPanelProps = FilterProps & {
+type FilterPanelProps = FilterProps<InsideFilterItemType> & {
    toggleShowPanel(): void;
+   setItems: React.Dispatch<React.SetStateAction<InsideFilterItemType[]>>;
 };
 
 const FilterPanel: React.FC<FilterPanelProps> = ({
    items,
+   setItems,
    width,
    headerText,
    toggleShowPanel
 }) => {
    const computedStyles = useMemo(() => ({
-      ...STYLES,
       width: `${width}px`
    }), [width]);
 
+   const selectedChoiceItems = items.filter((item) => item.status === 'selected');
+   const awaitingChoiceItems = items.filter((item) => item.status === 'awaitingСhoice');
+
    return (
       <section
+         className='filter-panel'
          style={computedStyles}>
-         <section style={HEADER_STYLES}>
+         <section className='filter-panel__header'>
             <section>
                {headerText}
             </section>
-            <CloseIcon
-               width={20}
-               height={20}
-               onClick={toggleShowPanel}
-            />
+            <IconButton onClick={toggleShowPanel}>
+               <CloseIcon />
+            </IconButton>
          </section>
-         <section>
-            {items.map((item) => <FilterItem key={item.id} {...item}/>)}
+         <section className='filter-panel__selected-block'>
+            {
+               (selectedChoiceItems.length > 0) ? (
+                  selectedChoiceItems.map((item) => <FilterItem key={item.id} setItems={setItems} {...item} />)
+               ) : (
+                  <span>Nothing selected</span>
+               )
+            }
          </section>
+         {
+            (awaitingChoiceItems.length > 0) ? (
+               <section className='filter-panel__awaiting-choice-block'>
+                  {awaitingChoiceItems.map((item) => <FilterItem key={item.id} setItems={setItems} {...item} />)}
+               </section>
+            ) : null
+         }
       </section>
    )
 };
