@@ -1,4 +1,4 @@
-type FilterStatus = 'awaitingСhoice' | 'selected';
+export type FilterStatus = 'awaitingСhoice' | 'selected';
 
 export type NumberEntrySettings = {
    kind: 'numberEntry';

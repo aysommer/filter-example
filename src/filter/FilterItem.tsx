@@ -1,5 +1,5 @@
-import type { InsideFilterItemType, NumberEntrySettings, SelectSettings } from './types';
-import React from 'react'
+import type { FilterStatus, InsideFilterItemType, NumberEntrySettings, SelectSettings } from './types';
+import React, { memo, useCallback } from 'react'
 
 import './FilterItem.css';
 
@@ -53,33 +53,25 @@ const Select: React.FC<SelectProps> = ({
    )
 }
 
-const FilterItem: React.FC<FilterItemProps> = ({
+const FilterItem: React.FC<FilterItemProps> = memo(({
    id,
    text,
    status,
    settings,
    setItems
 }) => {
-   const handleShowItem = () => {
+   const bindToggleAction = useCallback((status: FilterStatus) => () => {
       setItems((oldItems) => oldItems.map((item) => {
          return (item.id === id) ? {
             ...item,
-            status: 'selected'
+            status
          } : item
       }));
-   }
-   const handleHideItem = () => {
-      setItems((oldItems) => oldItems.map((item) => {
-         return (item.id === id) ? {
-            ...item,
-            status: 'awaitingСhoice'
-         } : item
-      }));
-   }
+   }, [id, setItems]);
 
    return (
       (status === 'awaitingСhoice') ? (
-         <button className='filter-item' onClick={handleShowItem}>
+         <button className='filter-item' onClick={bindToggleAction('selected')}>
             {text}
          </button>
       ) : (status === 'selected') ? (
@@ -88,15 +80,15 @@ const FilterItem: React.FC<FilterItemProps> = ({
                min={settings.min}
                max={settings.max}
                title={text}
-               onHide={handleHideItem} />
+               onHide={bindToggleAction('awaitingСhoice')} />
          ) : (settings.kind === 'select') ? (
             <Select
                title={text}
                items={settings.items}
-               onHide={handleHideItem} />
+               onHide={bindToggleAction('awaitingСhoice')} />
          ) : null
       ) : null
    );
-}
+});
 
 export default FilterItem;
