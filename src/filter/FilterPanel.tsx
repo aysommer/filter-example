@@ -40,7 +40,10 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
          <section className='filter-panel__selected-block'>
             {
                (selectedChoiceItems.length > 0) ? (
-                  selectedChoiceItems.map((item) => <FilterItem key={item.id} setItems={setItems} {...item} />)
+                  <>
+                     <div className='filter-panel__selected-title'>Selected now</div>
+                     {selectedChoiceItems.map((item) => <FilterItem key={item.id} setItems={setItems} {...item} />)}
+                  </>
                ) : (
                   <span>Nothing selected</span>
                )
