@@ -14,7 +14,7 @@ import {
 
 const FilterPanel = lazy(() => import('./FilterPanel'));
 
-function getFilterState(items: FilterItemType[]): InsideFilterItemType[] {
+function getDefaultState(items: FilterItemType[]): InsideFilterItemType[] {
    return items.map((item) => ({
       ...item,
       status: 'awaitingСhoice'
@@ -27,16 +27,23 @@ const Filter: React.FC<FilterProps<FilterItemType>> = ({
    headerText = ''
 }) => {
    const [showPanel, setShowPanel] = useState(false);
-   const [_items, _setItems] = useState(getFilterState(items));
+   const [_items, _setItems] = useState(getDefaultState(items));
 
    const toggleShowPanel = useCallback(() => {
       setShowPanel((oldValue) => !oldValue);
    }, []);
 
+   const resetFilter = useCallback(() => {
+      _setItems((oldValue) => oldValue.map((item) => ({
+         ...item,
+         status: 'awaitingСhoice'
+      })))
+   }, [])
+
    return (
       (!showPanel) ? (
          <IconButton onClick={toggleShowPanel}>
-            <FilterIcon />
+            <FilterIcon width={20} height={20} />
          </IconButton>
       ) : (
          <Suspense fallback={<></>}>
@@ -46,6 +53,7 @@ const Filter: React.FC<FilterProps<FilterItemType>> = ({
                width={width}
                headerText={headerText}
                toggleShowPanel={toggleShowPanel}
+               resetFilter={resetFilter}
             />
          </Suspense>
       )

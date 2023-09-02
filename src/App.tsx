@@ -30,7 +30,7 @@ function App() {
       <main>
          <Filter
             items={EMPLOYEE_FILTER_ITEMS}
-            width={300}
+            width={400}
             headerText='Employees'
          />
       </main>
