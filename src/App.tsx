@@ -1,4 +1,5 @@
 import { Filter, FilterItemType } from './filter';
+import { List, ListItemType } from './list';
 
 import './App.css';
 
@@ -25,6 +26,20 @@ const EMPLOYEE_FILTER_ITEMS: FilterItemType[] = [{
    }
 }];
 
+const POSITIONS: ListItemType[] = [{
+   id: crypto.randomUUID(),
+   value: 'Human 1'
+},{
+   id: crypto.randomUUID(),
+   value: 'Human 2'
+},{
+   id: crypto.randomUUID(),
+   value: 'Human 3'
+},{
+   id: crypto.randomUUID(),
+   value: 'Human 4'
+}];
+
 function App() {
    return (
       <main>
@@ -33,6 +48,7 @@ function App() {
             width={400}
             headerText='Employees'
          />
+         <List items={POSITIONS} />
       </main>
    )
 }

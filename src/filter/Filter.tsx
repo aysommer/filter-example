@@ -41,22 +41,23 @@ const Filter: React.FC<FilterProps<FilterItemType>> = ({
    }, [])
 
    return (
-      (!showPanel) ? (
+      <>
          <IconButton onClick={toggleShowPanel}>
             <FilterIcon width={20} height={20} />
          </IconButton>
-      ) : (
-         <Suspense fallback={<></>}>
-            <FilterPanel
-               items={_items}
-               setItems={_setItems}
-               width={width}
-               headerText={headerText}
-               toggleShowPanel={toggleShowPanel}
-               resetFilter={resetFilter}
-            />
-         </Suspense>
-      )
+         {(showPanel) ? (
+            <Suspense fallback={<></>}>
+               <FilterPanel
+                  items={_items}
+                  setItems={_setItems}
+                  width={width}
+                  headerText={headerText}
+                  toggleShowPanel={toggleShowPanel}
+                  resetFilter={resetFilter}
+               />
+            </Suspense >
+         ) : null}
+      </>
    )
 }
 
