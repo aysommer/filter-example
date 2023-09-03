@@ -5,9 +5,11 @@ import FilterItem from './FilterItem';
 import { IconButton } from '../iconButton';
 
 import './FilterPanel.css';
+import { Button } from '../button';
 
 type FilterPanelProps = FilterProps<InsideFilterItemType> & {
    toggleShowPanel(): void;
+   resetFilter(): void;
    setItems: React.Dispatch<React.SetStateAction<InsideFilterItemType[]>>;
 };
 
@@ -16,7 +18,8 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
    setItems,
    width,
    headerText,
-   toggleShowPanel
+   toggleShowPanel,
+   resetFilter
 }) => {
    const computedStyles = useMemo(() => ({
       width: `${width}px`
@@ -33,22 +36,25 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             <section>
                {headerText}
             </section>
-            <IconButton onClick={toggleShowPanel}>
-               <CloseIcon />
-            </IconButton>
+            <section className='filter-panel__header-buttons'>
+               {
+                  (selectedChoiceItems.length > 0) ? (
+                     <Button onClick={resetFilter}>Reset</Button>
+                  ) : null
+               }
+               <IconButton onClick={toggleShowPanel}>
+                  <CloseIcon width={20} height={20} />
+               </IconButton>
+            </section>
          </section>
          <section className='filter-panel__selected-block'>
             {
                (selectedChoiceItems.length > 0) ? (
                   <>
                      <div className='filter-panel__selected-title'>Selected now</div>
-                     {selectedChoiceItems.map((item) => (
-                        <FilterItem
-                           key={item.id}
-                           setItems={setItems}
-                           {...item}
-                        />
-                     ))}
+                     <section>
+                        {selectedChoiceItems.map((item) => <FilterItem key={item.id} setItems={setItems} {...item} />)}
+                     </section>
                   </>
                ) : (
                   <span>Nothing selected</span>
@@ -57,15 +63,14 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
          </section>
          {
             (awaitingChoiceItems.length > 0) ? (
-               <section className='filter-panel__awaiting-choice-block'>
-                  {awaitingChoiceItems.map((item) => (
-                     <FilterItem
-                        key={item.id}
-                        setItems={setItems}
-                        {...item}
-                     />
-                  ))}
-               </section>
+               <>
+                  <section className='filter-panel__awaiting-choice-block'>
+                     <div className='filter-panel__awaiting-choice-title'>Can select</div>
+                     <section className='filter-panel__awaiting-choice-item'>
+                        {awaitingChoiceItems.map((item) => <FilterItem key={item.id} setItems={setItems} {...item} />)}
+                     </section>
+                  </section>
+               </>
             ) : null
          }
       </section>

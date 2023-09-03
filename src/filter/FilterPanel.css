@@ -1,9 +1,12 @@
 .filter-panel {
+   top: 0;
+   position: absolute;
    display: flex;
    flex-direction: column;
    border-radius: 16px;
    background: white;
    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+   z-index: 100;
 }
 
 .filter-panel__header {
@@ -14,17 +17,31 @@
    font-weight: 600;
 }
 
-.filter-panel__selected-block {
-   padding: 8px;
-   margin-bottom: 16px;
+.filter-panel__header-buttons {
+   display: flex;
+   gap: 8px;
+   align-items: center;
 }
 
-.filter-panel__selected-title {
+.filter-panel__selected-block {
+   padding: 0 8px 8px 8px;
+   margin-bottom: 4px;
+}
+
+.filter-panel__selected-title,
+.filter-panel__awaiting-choice-title {
    font-weight: 600;
    margin-bottom: 8px;
 }
 
+.filter-panel__awaiting-choice-item {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 4px;
+}
+
 .filter-panel__awaiting-choice-block {
+   gap: 4px;
    background-color: #EEEEEE;
    border-radius: 0 0 16px 16px;
    padding: 8px;

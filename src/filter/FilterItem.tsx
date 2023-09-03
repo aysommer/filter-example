@@ -1,5 +1,7 @@
-import type { FilterStatus, InsideFilterItemType, NumberEntrySettings, SelectSettings } from './types';
-import React, { memo, useCallback } from 'react'
+import type { InsideFilterItemType } from './types';
+import React from 'react'
+import AwaitingChoiceFilterItem from './AwaitingChoiceFilterItem';
+import SelectedFilterItem from './SelectedFilterItem';
 
 import './FilterItem.css';
 
@@ -7,88 +9,44 @@ type FilterItemProps = InsideFilterItemType & {
    setItems: React.Dispatch<React.SetStateAction<InsideFilterItemType[]>>;
 };
 
-type SelectedFilterItem = {
-   title: string;
-   onHide(): void;
-};
-
-type NumberEntryProps = Omit<NumberEntrySettings, 'kind'> & SelectedFilterItem;
-
-type SelectProps = Omit<SelectSettings, 'kind'> & SelectedFilterItem;
-
-const NumberEntry: React.FC<NumberEntryProps> = ({
-   title,
-   min,
-   max,
-   onHide
-}) => {
-   return (
-      <div>
-         <div>{title}</div>
-         <input className='number-entry' type="number" min={min} max={max} defaultValue={min} />
-         <span onClick={onHide}>x</span>
-      </div>
-   )
-};
-
-const Select: React.FC<SelectProps> = ({
-   title,
-   items = [],
-   onHide
-}) => {
-   return (
-      <div>
-         <div>{title}</div>
-         <select className='select'>
-            {items.map((item) => (
-               <option
-                  key={item.value}
-                  value={item.value}>
-                  {item.text}
-               </option>
-            ))}
-         </select>
-         <span onClick={onHide}>x</span>
-      </div>
-   )
-}
-
-const FilterItem: React.FC<FilterItemProps> = memo(({
+const FilterItem: React.FC<FilterItemProps> = ({
    id,
    text,
    status,
    settings,
    setItems
 }) => {
-   const bindToggleAction = useCallback((status: FilterStatus) => () => {
+   const onShowItem = () => {
       setItems((oldItems) => oldItems.map((item) => {
          return (item.id === id) ? {
             ...item,
-            status
+            status: 'selected'
          } : item
       }));
-   }, [id, setItems]);
+   }
+   const onHideItem = () => {
+      setItems((oldItems) => oldItems.map((item) => {
+         return (item.id === id) ? {
+            ...item,
+            status: 'awaitingСhoice'
+         } : item
+      }));
+   }
 
    return (
       (status === 'awaitingСhoice') ? (
-         <button className='filter-item' onClick={bindToggleAction('selected')}>
-            {text}
-         </button>
+         <AwaitingChoiceFilterItem
+            onShowItem={onShowItem}
+            text={text}
+         />
       ) : (status === 'selected') ? (
-         (settings.kind === 'numberEntry') ? (
-            <NumberEntry
-               min={settings.min}
-               max={settings.max}
-               title={text}
-               onHide={bindToggleAction('awaitingСhoice')} />
-         ) : (settings.kind === 'select') ? (
-            <Select
-               title={text}
-               items={settings.items}
-               onHide={bindToggleAction('awaitingСhoice')} />
-         ) : null
+         <SelectedFilterItem
+            text={text}
+            settings={settings}
+            onHideItem={onHideItem}
+         />
       ) : null
    );
-});
+}
 
 export default FilterItem;

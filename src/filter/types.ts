@@ -26,6 +26,11 @@ export type FilterItemType = {
    settings: FilterItemSettings;
 };
 
+export type SelectedFilterItem = {
+   title: string;
+   onHide(): void;
+};
+
 export type InsideFilterItemType = FilterItemType & {
    status: FilterStatus;
 };
