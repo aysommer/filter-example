@@ -14,24 +14,19 @@ const SelectedFilterItem: React.FC<SelectedFilterItemProps> = ({
    onHideItem
 }) => {
    return (
-      <section className='filter-item_selected'>
+      <div className='filter-item_selected'>
          <div>{text}</div>
-         <section className='filter-item_selected-contollers'>
+         <div className='filter-item_selected-contollers'>
             {
                (settings.kind === 'numberEntry') ? (
-                  <NumberEntry
-                     min={settings.min}
-                     max={settings.max}
-                  />
+                  <NumberEntry {...settings} />
                ) : (settings.kind === 'select') ? (
-                  <Select
-                     items={settings.items}
-                  />
+                  <Select {...settings} />
                ) : null
             }
             <CloseIcon width={16} height={16} onClick={onHideItem} />
-         </section>
-      </section>
+         </div>
+      </div>
    )
 }
 

@@ -1,5 +1,6 @@
 .filter-panel {
    top: 0;
+   user-select: none;
    position: absolute;
    display: flex;
    flex-direction: column;

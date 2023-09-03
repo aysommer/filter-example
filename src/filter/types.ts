@@ -4,6 +4,7 @@ export type NumberEntrySettings = {
    kind: 'numberEntry';
    max: number;
    min: number;
+   maxLength?: number;
 }
 
 type SelectItem = {

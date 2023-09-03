@@ -5,7 +5,7 @@ import React, {
    Suspense
 } from 'react';
 import { IconButton } from '../iconButton';
-import FilterIcon from '../icons/FilterIcon';
+import { FilterIcon } from '../icons';
 import {
    FilterItemType,
    FilterProps,
@@ -26,11 +26,19 @@ const Filter: React.FC<FilterProps<FilterItemType>> = ({
    width,
    headerText = ''
 }) => {
-   const [showPanel, setShowPanel] = useState(false);
+   const [panelVisibility, setPanelVisibility] = useState(false);
    const [_items, _setItems] = useState(getDefaultState(items));
 
-   const toggleShowPanel = useCallback(() => {
-      setShowPanel((oldValue) => !oldValue);
+   const showPanel = useCallback(() => {
+      setPanelVisibility(true);
+   }, []);
+
+   const hidePanel = useCallback(() => {
+      setPanelVisibility(false);
+   }, []);
+
+   const saveFilter = useCallback(() => {
+      setPanelVisibility(false);
    }, []);
 
    const resetFilter = useCallback(() => {
@@ -42,17 +50,18 @@ const Filter: React.FC<FilterProps<FilterItemType>> = ({
 
    return (
       <>
-         <IconButton onClick={toggleShowPanel}>
+         <IconButton onClick={showPanel}>
             <FilterIcon width={20} height={20} />
          </IconButton>
-         {(showPanel) ? (
+         {(panelVisibility) ? (
             <Suspense fallback={<></>}>
                <FilterPanel
                   items={_items}
                   setItems={_setItems}
                   width={width}
                   headerText={headerText}
-                  toggleShowPanel={toggleShowPanel}
+                  hidePanel={hidePanel}
+                  saveFilter={saveFilter}
                   resetFilter={resetFilter}
                />
             </Suspense >

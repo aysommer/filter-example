@@ -8,9 +8,9 @@ const List: React.FC<ListProps> = ({
    items = []
 }) => {
    return (
-      <section>
+      <div>
          {items.map((item) => <ListItem key={item.id} {...item}/>)}
-      </section>
+      </div>
    )
 }
 
