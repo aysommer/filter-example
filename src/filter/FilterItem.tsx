@@ -7,6 +7,7 @@ import './FilterItem.css';
 
 type FilterItemProps = InsideFilterItemType & {
    setItems: React.Dispatch<React.SetStateAction<InsideFilterItemType[]>>;
+   setHasChanges: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const FilterItem: React.FC<FilterItemProps> = ({
@@ -14,7 +15,8 @@ const FilterItem: React.FC<FilterItemProps> = ({
    text,
    status,
    settings,
-   setItems
+   setItems,
+   setHasChanges
 }) => {
    const onShowItem = () => {
       setItems((oldItems) => oldItems.map((item) => {
@@ -23,6 +25,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
             status: 'selected'
          } : item
       }));
+      setHasChanges(true);
    }
    const onHideItem = () => {
       setItems((oldItems) => oldItems.map((item) => {
@@ -31,6 +34,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
             status: 'awaitingСhoice'
          } : item
       }));
+      setHasChanges(true);
    }
 
    return (

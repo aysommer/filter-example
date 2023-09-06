@@ -34,6 +34,7 @@ export type SelectedFilterItem = {
 
 export type InsideFilterItemType = FilterItemType & {
    status: FilterStatus;
+   selectedValue: unknown;
 };
 
 export type FilterProps<T> = {
